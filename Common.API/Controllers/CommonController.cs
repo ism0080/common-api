@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Common.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CommonController : ControllerBase
 {
   private readonly ILogger<CommonController> _logger;
@@ -29,7 +29,7 @@ public class CommonController : ControllerBase
   public async Task<IActionResult> SendEmail([FromBody] ContactRequestModel model)
   {
     var result = await _emailService.ContactRequest(model);
-    return Ok("Test");
+    return result ? Ok() : BadRequest();
   }
 
 }

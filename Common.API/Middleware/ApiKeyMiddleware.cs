@@ -1,6 +1,8 @@
 using System.Net;
+using System.Text;
 using Common.App.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Common.API.Middleware;
 
@@ -41,8 +43,9 @@ internal class ApiKeyMiddleware
 
     if (!validApiKey)
     {
-      var errorMessage = $"Failed to validate api key. {validationMessage}";
+      var errorMessageBytes = Encoding.UTF8.GetBytes($"Failed to validate api key. {validationMessage}");
       context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+      await context.Response.Body.WriteAsync(errorMessageBytes);
     }
     else
     {
